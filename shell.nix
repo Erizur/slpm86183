@@ -17,5 +17,5 @@ let
 in
 pkgs.mkShell {
     name = "popenv";
-    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux endPkgs.binutilsNoLibc endPkgs.gccWithoutTargetLibc.cc endPkgs.gccWithoutTargetLibc.bintools.bintools];
+    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux endPkgs.binutilsNoLibc];
 }
