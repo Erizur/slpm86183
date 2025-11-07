@@ -3,7 +3,7 @@
   <img src="https://github.com/user-attachments/assets/8844b7e6-2632-4e54-ab60-2323adf980bc" width="24%" alt="Mimi dancing" align="right">
   <div>
     This is a decompilation project for the PSX port of BEMANI's 1998 rhythm arcade game, <b>pop'n music.</b>
-    It is currently on it's early stages. Feel free to contribute if you want!
+    It is currently on its early stages. Feel free to contribute if you want!
   </div>
   <br>
   <h3>Decompilation Progress</h3>
