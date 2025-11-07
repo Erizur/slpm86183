@@ -18,4 +18,13 @@ in
 pkgs.mkShell {
     name = "popenv";
     nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux endPkgs.binutilsNoLibc];
+    shellHook = ''
+      mkdir -p .bin
+      ln -sf $(which mips-linux-gnu-as) .bin/mipsel-linux-gnu-as
+      ln -sf $(which mips-linux-gnu-ld) .bin/mipsel-linux-gnu-ld
+      ln -sf $(which mips-linux-gnu-objdump) .bin/mipsel-linux-gnu-objdump
+      export PATH="$PWD/.bin:$PATH"
+
+      echo "mipsel-linux-gnu symlinks now available"
+    '';
 }

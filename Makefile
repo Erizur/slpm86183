@@ -72,7 +72,7 @@ MASPSX_ARGS     := --expand-div
 
 # flags
 SDATA_LIMIT     := -G4
-OPT_FLAGS       := -Os
+OPT_FLAGS       := -O2
 
 # macros
 define list_src_files
@@ -99,7 +99,7 @@ endef
 
 # recipes
 all: build check
-build: vib-ribbon
+build: SLPM_86183
 clean:
 		rm -rf build asm
 format:

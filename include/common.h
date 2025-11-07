@@ -1,17 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <sys/types.h>
-#include <libgte.h>
-#include <libgpu.h>
-
-// Our types
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef signed char s8;
-typedef signed short s16;
-typedef signed int s32;
+#include "include_asm.h"
+#include "types.h"
 
 extern int fprintf(int fd, const char* fmt, ...);
 
