@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  crossPkgs = import <nixpkgs> { crossSystem = { config = "mips-linux-gnu"; }; };
+  cross = import <nixpkgs> { crossSystem = { config = "mips-linux-gnu"; }; };
   pcsx-redux = (pkgs.callPackage ./pcsx-redux/package.nix { inherit pkgs; });
   ghidra_pkg = pkgs.ghidra.withExtensions (
     exts:
@@ -12,8 +12,10 @@ let
       ghidra-delinker-extension
     ]
   );
+
+  endPkgs = cross.buildPackages;
 in
 pkgs.mkShell {
     name = "popenv";
-    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux crossPkgs.buildPackages.binutilsNoLibc ];
+    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux endPkgs.binutilsNoLibc endPkgs.gccWithoutTargetLibc.cc endPkgs.gccWithoutTargetLibc.bintools.bintools];
 }

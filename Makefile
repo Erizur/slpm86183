@@ -1,175 +1,207 @@
-# binaries
-GAME_ID         := slpm861
-GAME            := pnmcs
-MAINT           := SLPM_861
+# Configuration
+# Currently, pop'n does not have overlays (from what i know).
+BUILD_OVERLAYS ?= 0
+NON_MATCHING   ?= 0
+SKIP_ASM       ?= 0
 
-# compilers
-GCC             := ./bin/gcc -c -B./bin/
-CC              := ./bin/cc1 -quiet
+# Names and Paths
+GAME_NAME    := SLPM_861.83
+ROM_DIR      := iso
+CONFIG_DIR   := config
+LINKER_DIR   := linker
+BUILD_DIR    := build
+OUT_DIR      := $(BUILD_DIR)/out
+TOOLS_DIR    := tools
+OBJDIFF_DIR  := $(TOOLS_DIR)/objdiff
+PERMUTER_DIR := permuter
+ASSETS_DIR   := assets
+ASM_DIR      := asm
+C_DIR        := src
+EXPECTED_DIR := expected
 
-CROSS           := mips-linux-gnu-
-AS              := $(CROSS)as -EL -32 -march=r3000 -mtune=r3000 -msoft-float -no-pad-sections -Iinclude/
-LD              := $(CROSS)ld -EL
-CPP             := $(CROSS)cpp
-OBJCOPY         := $(CROSS)objcopy
-MODERN_GCC      := gcc
+# Tools
+CROSS   := mips-linux-gnu
+AS      := $(CROSS)-as
+LD      := $(CROSS)-ld
+OBJCOPY := $(CROSS)-objcopy
+OBJDUMP := $(CROSS)-objdump
+CPP     := $(CROSS)-cpp
+CC      := bin/cc1
+OBJDIFF := $(OBJDIFF_DIR)/objdiff
 
-AS_FLAGS        := -Wa,-EL,-march=r3000,-mtune=r3000,-msoft-float,-no-pad-sections,-Iinclude
-# AS_FLAGS        := -Iinclude -march=r3000 -mtune=r3000 -no-pad-sections -Os
+PYTHON          := python3
+SPLAT           := $(PYTHON) $(TOOLS_DIR)/splat/split.py
+MASPSX          := $(PYTHON) $(TOOLS_DIR)/maspsx/maspsx.py
 
-CPP_FLAGS       := -Iinclude -Iinclude/psyq
-CPP_FLAGS       += -undef -lang-c -Wall -fno-builtin -fsigned-char
-CPP_FLAGS       += -Dmips -D__GNUC__=2 -D__OPTIMIZE__ -D__mips__ -D__mips -Dpsx -D__psx__ -D__psx -D_PSYQ -D__EXTENSIONS__ -D_MIPSEL -D_LANGUAGE_C -DLANGUAGE_C
+# Flags
+OPT_FLAGS           := -O3 -G4096
+ENDIAN              := -EL
+INCLUDE_FLAGS       := -Iinclude -I $(BUILD_DIR) -Iinclude/psyq
+DEFINE_FLAGS        := -D_LANGUAGE_C -DUSE_INCLUDE_ASM
+CPP_FLAGS           := $(INCLUDE_FLAGS) $(DEFINE_FLAGS) -P -MMD -MP -undef -Wall -lang-c -nostdinc
+LD_FLAGS            := $(ENDIAN) $(OPT_FLAGS) -nostdlib --no-check-sections
+OBJCOPY_FLAGS       := -O binary
+OBJDUMP_FLAGS       := --disassemble-all --reloc --disassemble-zeroes -Mreg-names=32
+SPLAT_FLAGS         := --disassemble-all
+DL_Flags := -G0
+AS_FLAGS := $(ENDIAN) $(INCLUDE_FLAGS) $(OPT_FLAGS) $(DL_FLAGS) -march=r3000 -mtune=r3000 -no-pad-sections
+CC_FLAGS := $(OPT_FLAGS) $(DL_FLAGS) -mips1 -mcpu=3000 -w -funsigned-char -fpeephole -ffunction-cse -fpcc-struct-return -fcommon -fverbose-asm -msoft-float -mgas -fgnu-linker -quiet
+MASPSX_FLAGS := --aspsx-version=2.56 --run-assembler $(AS_FLAGS)
 
-CC_FLAGS        := -mips1 -mno-abicalls -mel -msplit-addresses -mgpOPT -mgpopt -msoft-float -gcoff
-CC_FLAGS        += $(CPP_FLAGS)
-
-CHECK_WARNINGS  := -Wall -Wextra -Wno-format-security -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-variable -Wno-missing-braces -Wno-int-conversion
-CC_CHECK        := $(MODERN_GCC) -fsyntax-only -std=gnu90 -m32 $(CHECK_WARNINGS) $(CPP_FLAGS)
-
-ifdef PERMUTER
-CPP_FLAGS       += -DPERMUTER
+ifeq ($(NON_MATCHING),1)
+	CPP_FLAGS := $(CPP_FLAGS) -DNON_MATCHING
 endif
 
-# directories
-ASM_DIR         := asm
-SRC_DIR         := src
-INCLUDE_DIR     := include
-BUILD_DIR       := build
-CONFIG_DIR      := config
-TOOLS_DIR       := tools
+ifeq ($(SKIP_ASM),1)
+	CPP_FLAGS := $(CPP_FLAGS) -DSKIP_ASM
+endif
 
-# files
-PM_ASM_DIRS   := $(ASM_DIR)/game $(ASM_DIR)/game/data
-PM_SRC_DIRS   := $(SRC_DIR)/game
-PM_S_FILES    := $(foreach dir,    $(PM_ASM_DIRS),     $(wildcard $(dir)/*.s)) \
-                    $(foreach dir,    $(PM_ASM_DIRS),     $(wildcard $(dir)/**/*.s))
-PM_C_FILES    := $(foreach dir,    $(PM_SRC_DIRS),     $(wildcard $(dir)/*.c)) \
-                    $(foreach dir,    $(PM_SRC_DIRS),     $(wildcard $(dir)/**/*.c))
-PM_O_FILES    := $(foreach file,    $(PM_S_FILES),     $(BUILD_DIR)/$(file).o) \
-                    $(foreach file,    $(PM_C_FILES),     $(BUILD_DIR)/$(file).o)
-PM_TARGET     := $(BUILD_DIR)/$(GAME)
+# Utils
 
-# tools
-PYTHON          := python3
-SPLAT_DIR       := $(TOOLS_DIR)/splat
-SPLAT_APP       := $(SPLAT_DIR)/split.py
-SPLAT           := $(PYTHON) $(SPLAT_APP)
-ASMDIFFER_DIR   := $(TOOLS_DIR)/asm-differ
-ASMDIFFER_APP   := $(ASMDIFFER_DIR)/diff.py
-M2CTX_APP       := $(TOOLS_DIR)/m2ctx.py
-M2CTX           := $(PYTHON) $(M2CTX_APP)
-M2C_DIR         := $(TOOLS_DIR)/m2c
-M2C_APP         := $(M2C_DIR)/m2c.py
-M2C             := $(PYTHON) $(M2C_APP)
-M2C_ARGS        := -P 4
-MASPSX_DIR      := $(TOOLS_DIR)/maspsx
-MASPSX_APP      := $(MASPSX_DIR)/maspsx.py
-MASPSX          := $(PYTHON) $(MASPSX_APP)
-MASPSX_ARGS     := --expand-div
+# Function to find matching .s files for a target name.
+find_s_files = $(shell find $(ASM_DIR)/$(strip $1) -type f -path "*.s" -not -path "asm/*matchings*" 2> /dev/null)
 
-# flags
-SDATA_LIMIT     := -G4
-OPT_FLAGS       := -Os
+# Function to find matching .c files for a target name.
+find_c_files = $(shell find $(C_DIR)/$(strip $1) -type f -path "*.c" 2> /dev/null)
 
-# macros
-define list_src_files
-		$(foreach dir, $(ASM_DIR)/game,         $(wildcard $(dir)/**.s))
-		$(foreach dir, $(ASM_DIR)/game/data,    $(wildcard $(dir)/**.s))
-		$(foreach dir, $(SRC_DIR)/game,         $(wildcard $(dir)/**.c))
+# Function to generate matching .o files for target name in build directory.
+gen_o_files = $(addprefix $(BUILD_DIR)/, \
+							$(patsubst %.s, %.s.o, $(call find_s_files, $1)) \
+							$(patsubst %.c, %.c.o, $(call find_c_files, $1)))
+
+get_target_out = $(addprefix $(OUT_DIR)/,$1)
+
+# Template definition for elf target.
+# First parameter should be source target with folder (e.g. screens/credits).
+# Second parameter should be end target (e.g. build/VIN/STF_ROLL.BIN).
+# If we skip the ASM inclusion to determine progress, we will not be able to link. Skip linking, if so.
+
+ifeq ($(SKIP_ASM),1)
+
+define make_elf_target
+$2: $2.elf
+$2.elf: $(call gen_o_files, $1)
 endef
 
-define list_o_files
-		$(foreach file, $(call list_src_files), $(BUILD_DIR)/$(file).o)
+else
+
+define make_elf_target
+$2: $2.elf
+	$(OBJCOPY) $(OBJCOPY_FLAGS) $$< $$@
+
+$2.elf: $(call gen_o_files, $1)
+	@mkdir -p $(dir $2)
+	$(LD) $(LD_FLAGS) \
+		-Map $2.map \
+		-T $(LINKER_DIR)/$1.ld \
+		-T $(LINKER_DIR)/$(filter-out ./,$(dir $1))undefined_syms_auto.$(notdir $1).txt \
+		-T $(LINKER_DIR)/$(filter-out ./,$(dir $1))undefined_funcs_auto.$(notdir $1).txt \
+		-o $$@
 endef
 
-define link
-		$(LD) -o $(2) \
-			-Map $(BUILD_DIR)/$(1).map \
-			-T $(1).ld \
-			-T $(CONFIG_DIR)/undefined_syms_auto.$(GAME_ID).$(1).txt \
-			-T $(CONFIG_DIR)/undefined_funcs_auto.$(GAME_ID).$(1).txt \
-			-T $(CONFIG_DIR)/undefined_syms.$(GAME_ID).$(1).txt \
-			--no-check-sections \
-			-nostdlib \
-			-s
-endef
+endif
 
-# recipes
-all: build check
-build: pnmcs
-clean:
-		rm -rf build asm
-format:
-		clang-format -i $$(find $(SRC_DIR)/ -type f -name "*.c")
-		clang-format -i $$(find $(INCLUDE_DIR)/ -type f -name "*.h")
-check:
-		sha1sum --check $(GAME_ID).sha
+# Targets
+TARGET_MAIN := SLPM_861.83
+
+# Source definitions
+TARGET_IN  := $(TARGET_MAIN)
+TARGET_OUT := $(foreach target,$(TARGET_IN),$(call get_target_out,$(target)))
+LD_FILES   := $(addsuffix .ld,$(addprefix $(LINKER_DIR)/,$(TARGET_IN)))
+
+# Rules
+default: all
+
+all: build
+
+build: $(TARGET_OUT)
+
+objdiff-config: regenerate
+	@$(MAKE) NON_MATCHING=0 SKIP_ASM=0 expected
+	@$(MAKE) NON_MATCHING=1 SKIP_ASM=1 build
+	@$(PYTHON) $(OBJDIFF_DIR)/objdiff_generate.py $(OBJDIFF_DIR)/config.yaml
+
+report: objdiff-config
+	@$(OBJDIFF) report generate > $(BUILD_DIR)/progress.json
+
+check: build
+	@sha256sum --ignore-missing --check $(CONFIG_DIR)/slpm861.sha
+
+progress:
+	$(MAKE) build NON_MATCHING=1 SKIP_ASM=1
+
 expected: check
-		mkdir expected
-		rm -rf expected/build
-		cp -r build expected/build
+	mkdir -p $(EXPECTED_DIR)
+	mv build/src $(EXPECTED_DIR)/src
+	mv build/asm $(EXPECTED_DIR)/asm
+	rm -rf $(BUILD_DIR)
 
-$(MAINT).elf: $(PM_O_FILES)
-		$(LD) -o $@ \
-		-Map $(PM_TARGET).map \
-		-T $(GAME).ld \
-		-T $(CONFIG_DIR)/undefined_syms_auto.$(GAME_ID).$(GAME).txt \
-		--no-check-sections \
-		-nostdlib \
-		-s
+generate: $(LD_FILES)
 
-pnmcs: $(BUILD_DIR)/$(MAINT).83
-$(BUILD_DIR)/$(MAINT).83: $(BUILD_DIR)/$(MAINT).elf
-		$(OBJCOPY) -O binary $(BUILD_DIR)/$(MAINT).elf $@
-$(BUILD_DIR)/$(MAINT).elf: $(call list_o_files)
-		$(call link,pnmcs,$@)
+clean:
+	rm -rf $(BUILD_DIR)
+	rm -rf $(PERMUTER_DIR)
 
-dirs:
-	$(foreach dir,$(PM_ASM_DIRS) $(PM_SRC_DIRS),$(shell mkdir -p $(BUILD_DIR)/$(dir)))
+reset: clean
+	rm -rf $(ASM_DIR)
+	rm -rf $(LINKER_DIR)
+	rm -rf $(EXPECTED_DIR)
 
-extract: require-tools dirs
-		$(SPLAT) $(CONFIG_DIR)/splat.$(GAME_ID).yml
+regenerate: reset
+	$(MAKE) generate
 
-decompile: $(M2C_APP)
-		$(M2CTX) src/game/$(FILE).c
-		$(M2C) $(M2C_ARGS) --target mipsel-gcc-c --context ctx.c asm/game/nonmatchings/$(FILE)/$(FUNC).s
+setup: reset
+	$(MAKE) generate
 
-require-tools: $(SPLAT_APP) $(ASMDIFFER_APP)
-update-dependencies: require-tools $(M2CTX_APP) $(M2C_APP)
-		pip3 install -r $(TOOLS_DIR)/requirements.txt
+clean-build: clean
+	rm -rf $(LINKER_DIR)
+	$(MAKE) generate
+	$(MAKE) build
 
-$(SPLAT_APP):
-		git submodule init $(SPLAT_DIR)
-		git submodule update $(SPLAT_DIR)
-		$(PYTHON) -m pip install -r $(SPLAT_DIR)/requirements.txt
-$(ASMDIFFER_APP):
-		git submodule init $(ASMDIFFER_DIR)
-		git submodule update $(ASMDIFFER_DIR)
-$(M2CTX_APP):
-		curl -o $@ https://raw.githubusercontent.com/ethteck/m2ctx/main/m2ctx.py
-$(M2C_APP):
-		git submodule init $(M2C_DIR)
-		git submodule update $(M2C_DIR)
-		$(PYTHON) -m pip install --upgrade pycparser
-$(MASPSX_APP):
-		git submodule init $(MASPSX_DIR)
-		git submodule update $(MASPSX_DIR)
+clean-check: clean
+	rm -rf $(LINKER_DIR)
+	$(MAKE) generate
+	$(MAKE) check
+
+clean-progress: clean
+	rm -rf $(LINKER_DIR)
+	$(MAKE) generate
+	$(MAKE) progress
+
+# Recipes
+
+# .elf targets
+# Generate .elf target for each target from TARGET_IN.
+$(foreach target,$(TARGET_IN),$(eval $(call make_elf_target,$(target),$(call get_target_out,$(target)))))
+
+# Generate objects.
+$(BUILD_DIR)/%.i: %.c
+	@mkdir -p $(dir $@)
+	$(CPP) -P -MMD -MP -MT $@ -MF $@.d $(CPP_FLAGS) -o $@ $<
+
+$(BUILD_DIR)/%.c.s: $(BUILD_DIR)/%.i
+	@mkdir -p $(dir $@)
+	$(CC) $(CC_FLAGS) -o $@ $<
+
+$(BUILD_DIR)/%.c.o: $(BUILD_DIR)/%.c.s
+	@mkdir -p $(dir $@)
+	-$(MASPSX) $(MASPSX_FLAGS) -o $@ $<
+	-$(OBJDUMP) $(OBJDUMP_FLAGS) $@ > $(@:.o=.dump.s)
 
 $(BUILD_DIR)/%.s.o: %.s
-	$(AS) -Iinclude -march=r3000 -mtune=r3000 -no-pad-sections -Os -o $@ $<
+	@mkdir -p $(dir $@)
+	$(AS) $(AS_FLAGS) -o $@ $<
 
 $(BUILD_DIR)/%.bin.o: %.bin
-	$(LD) -r -b binary -o -Map %.map $@ $<
+	@mkdir -p $(dir $@)
+	$(LD) -r -b binary -o $@ $<
 
-# $(CPP) $(CPP_FLAGS) $< | $(CC) $(CC_FLAGS) $(OPT_FLAGS) $(SDATA_LIMIT) | $(MASPSX) $(MASPSX_ARGS) $(AS_SDATA_LIMIT) | $(AS) $(AS_SDATA_LIMIT) -o $@
-$(BUILD_DIR)/%.c.o: %.c $(MASPSX_APP)
-	@$(CC_CHECK) $<
-	$(GCC) $(CC_FLAGS) $(SDATA_LIMIT) $(OPT_FLAGS) $(AS_FLAGS) $< -o $@
+# Split .yaml.
+$(LINKER_DIR)/%.ld: $(CONFIG_DIR)/%.yaml
+	@mkdir -p $(dir $@)
+	$(SPLAT) $(SPLAT_FLAGS) $<
 
+### Settings
+.SECONDARY:
+.PHONY: all clean default
 SHELL = /bin/sh -e -o pipefail
-
-.PHONY: all, clean, format, check, expected
-.PHONY: pnmcs
-.PHONY: extract
-.PHONY: require-tools, update-dependencies

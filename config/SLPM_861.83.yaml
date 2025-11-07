@@ -1,0 +1,61 @@
+name: pop'n music (JP)
+sha1: baf9842c90a56bed42071753c92025c74900ebd7
+options:
+  basename: SLPM_861.83
+  target_path: iso/SLPM_861.83
+  elf_path: build/SLPM_861.83.elf
+  base_path: ..
+
+  platform: psx
+  compiler: GCC
+
+  asm_path: asm/SLPM_861.83
+  src_path: src/SLPM_861.83
+  build_path: build
+  create_asm_dependencies: True
+
+  ld_script_path: linker/SLPM_861.83.ld
+  ld_dependencies: True
+
+  find_file_boundaries: True
+  gp_value: 0x8007E9A4
+
+  o_as_suffix: False
+  use_legacy_include_asm: False
+
+  section_order: [".rodata", ".text", ".data", ".sdata", ".sbss", ".bss"]
+
+  symbol_addrs_path:
+    - config/symbol_addrs.SLPM_861.83.txt
+  reloc_addrs_path:
+    - config/reloc_addrs.txt
+
+  undefined_funcs_auto_path: linker/undefined_funcs_auto.SLPM_861.83.txt
+  undefined_syms_auto_path: linker/undefined_syms_auto.SLPM_861.83.txt
+
+  extensions_path: tools/splat_ext
+
+  subalign: 2
+
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+
+segments:
+  - name: header
+    type: header
+    start: 0x0
+
+  - name: main
+    type: code
+    start: 0x800
+    vram: 0x80010000
+    bss_size: 0x56AF0
+    subsegments:
+      - [0x800, rodata]
+      - [0x5F54, c, main]
+      - [0x5FA8, asm]
+      - [0x64F64, data]
+      - [0x6F1A4, data, sdata]
+  - [0x6F1A8]

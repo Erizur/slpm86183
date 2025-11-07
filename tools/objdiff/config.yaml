@@ -1,15 +1,13 @@
 categories:
-  - id: main
+  - id: slpm_861.83
     name: Main Executable
     paths:
-      - Game
+      - slpm_861.83
 
 expected_paths:
   asm: expected/asm
-  src: expected/src
 
 ignored_files:
-  - LIBS
-  - header
+  - slpm_861.83/header
 
 output: ./objdiff.json

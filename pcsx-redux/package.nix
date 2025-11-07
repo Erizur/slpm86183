@@ -2,7 +2,7 @@
 
 let
   version = "718f0912";
-  pname = "pcsx-redux";
+  pname = "pcsx-redux-bin";
   name = "${pname}-${version}";
 
   unzipped = pkgs.fetchzip {
@@ -60,7 +60,7 @@ pkgs.appimageTools.wrapType2 rec {
   ];
 
   meta = {
-    description = "Nix wrapper for the PCSX-Redux emulator";
+    description = "Nix wrapper for the binary of the PCSX-Redux emulator";
     homepage = "https://github.com/grumpycoders/pcsx-redux";
     downloadPage = "https://github.com/grumpycoders/pcsx-redux/releases";
     mainProgram = "pcsx-redux";

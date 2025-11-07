@@ -70,3 +70,16 @@ nonmatchings/
 assets/
 build/
 expected/
+linker/
+.idea/
+permuter/
+expected/
+.venv/
+.cache/
+
+objdiff.json
+null.d
+ctx.c
+compile.log
+compile_commands.json
+Zone.Identifier
