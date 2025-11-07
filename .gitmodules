@@ -1,9 +1,9 @@
 [submodule "tools/isodump"]
 	path = tools/isodump
-	url = https://github.com/jdperos/isodump
+	url = https://github.com/jdperos/isodump.git
 [submodule "tools/mkpsxiso"]
 	path = tools/mkpsxiso
-	url = https://github.com/Lameguy64/mkpsxiso
+	url = https://github.com/Lameguy64/mkpsxiso.git
 [submodule "tools/maspsx"]
 	path = tools/maspsx
 	url = https://github.com/mkst/maspsx.git
@@ -18,5 +18,5 @@
 	url = https://github.com/simonlindholm/decomp-permuter.git
 [submodule "tools/cd-dat-utils"]
 	path = tools/cd-dat-utils
-	url = https://github.com/StableCrimson/cd-dat-utils
+	url = https://github.com/StableCrimson/cd-dat-utils.git
 
