@@ -1,0 +1,38 @@
+name: Update progress
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/*.c'
+      - 'src/**/*.c'
+  workflow_dispatch:
+
+jobs:
+  update-progress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone main repository
+        uses: actions/checkout@v2
+      - name: Clone asset repository
+        uses: actions/checkout@v2
+        with:
+          ref: 'gh-report'
+          path: 'gh-report'
+      - name: Set-up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Generate report
+        run: |
+            mkdir -p gh-report/assets
+            python tools/report_progress.py /src/game SLPM_861.83 > gh-report/assets/progress-slpm861.json
+      - name: Commit report
+        run: |
+            git config --global user.name 'Erizur'
+            git config --global user.email '50849821+Erizur@users.noreply.github.com'
+            git add -A
+            git commit -m 'Update progress' || true
+            git push
+        working-directory: gh-report

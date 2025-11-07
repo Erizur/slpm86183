@@ -1,0 +1,62 @@
+name: pop'n music (JP)
+sha1: baf9842c90a56bed42071753c92025c74900ebd7
+options:
+  basename: pnmcs
+  target_path: iso/SLPM_861.83
+  base_path: ..
+
+  platform: psx
+  compiler: GCC
+
+  asm_path: asm/game/
+  src_path: src/game/
+  build_path: build
+  # create_asm_dependencies: True
+
+  ld_script_path: pnmcs.ld
+
+  find_file_boundaries: False
+  gp_value: 0x8007E9A4
+  # ld_gp_expression: main_SCOMMON_START + 0x7FF0
+
+  o_as_suffix: False
+  use_legacy_include_asm: False
+
+  section_order: [".rodata", ".text", ".data", ".bss"]
+  # auto_link_sections: [".data", ".rodata", ".bss"]
+
+  symbol_addrs_path:
+    - config/symbol_addrs.txt
+  reloc_addrs_path:
+    - config/reloc_addrs.txt
+
+  undefined_funcs_auto_path: config/undefined_funcs_auto.slpm861.pnmcs.txt
+  undefined_syms_auto_path: config/undefined_syms_auto.slpm861.pnmcs.txt
+
+  extensions_path: tools/splat_ext
+
+  subalign: 2
+
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+
+  # Uncomment this line if you need to use the maspsx reorder workaround hack
+  # https://github.com/mkst/maspsx?tab=readme-ov-file#include_asm-reordering-workaround-hack
+  # include_asm_macro_style: maspsx_hack
+segments:
+  - name: header
+    type: header
+    start: 0x0
+
+  - name: main
+    type: code
+    start: 0x800
+    vram: 0x80010000
+    # bss_size: Please fill out this value when you figure out the bss size
+    subsegments:
+      - [0x800, rodata, 800]
+      - [0x2130, asm, 2130] # estimated
+      - [0x22C8, data, 22C8] # estimated
+  - [0x6F800]

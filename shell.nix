@@ -1,6 +1,8 @@
-let
-  pkgs = import <nixpkgs> {};
+{ pkgs ? import <nixpkgs> {} }:
 
+let
+  crossPkgs = import <nixpkgs> { crossSystem = { config = "mips-linux-gnu"; }; };
+  pcsx-redux = (pkgs.callPackage ./pcsx-redux/package.nix { inherit pkgs; });
   ghidra_pkg = pkgs.ghidra.withExtensions (
     exts:
     with pkgs.ghidra-extensions; [
@@ -10,23 +12,8 @@ let
       ghidra-delinker-extension
     ]
   );
-
-  pythonStuff = (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-    ninja
-    colorama
-    termcolor
-    capstone
-    iterfzf
-    pyperclip
-    jinja2
-    levenshtein
-    cryptography
-    ipython
-  ]));
-
-  pcsx-redux = (pkgs.callPackage ./pcsx-redux/package.nix { inherit pkgs; });
 in
-  pkgs.mkShell {
+pkgs.mkShell {
     name = "popenv";
-    nativeBuildInputs = with pkgs.buildPackages; [ ghidra_pkg pythonStuff pcsx-redux ];
+    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux crossPkgs.buildPackages.binutilsNoLibc ];
 }
