@@ -4,7 +4,7 @@
 /extra/ghidra/
 
 # forgot about psyq
-psq_*
+psyq_*
 
 # taken from MGS:
 # https://github.com/FoxdieTeam/mgs_reversing/blob/master/.gitignore
