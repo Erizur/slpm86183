@@ -17,3 +17,6 @@
 	path = tools/decomp-permuter
 	url = https://github.com/simonlindholm/decomp-permuter.git
 
+[submodule "tools/splat"]
+	path = tools/splat
+	url = https://github.com/ethteck/splat.git
