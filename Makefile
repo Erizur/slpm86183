@@ -91,7 +91,7 @@ define link
 			-T $(LINKER_DIR)/$(GAME_ID).ld \
 			-T $(LINKER_DIR)/undefined_syms_auto.$(GAME_ID).txt \
 			-T $(LINKER_DIR)/undefined_funcs_auto.$(GAME_ID).txt \
-			-T $(LINKER_DIR)/undefined_syms.$(GAME_ID).txt \
+			-T $(CONFIG_DIR)/undefined_syms.$(GAME_ID).txt \
 			--no-check-sections \
 			-nostdlib \
 			-s

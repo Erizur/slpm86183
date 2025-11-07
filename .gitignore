@@ -49,6 +49,7 @@ source/.vscode/settings.json
 *.swo
 research/
 .cache/
+.bin/
 .sentry-native
 obj_psx_dev/
 third_party/
