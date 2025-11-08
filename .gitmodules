@@ -1,9 +1,3 @@
-[submodule "tools/isodump"]
-	path = tools/isodump
-	url = https://github.com/jdperos/isodump.git
-[submodule "tools/mkpsxiso"]
-	path = tools/mkpsxiso
-	url = https://github.com/Lameguy64/mkpsxiso.git
 [submodule "tools/maspsx"]
 	path = tools/maspsx
 	url = https://github.com/mkst/maspsx.git
