@@ -14,3 +14,6 @@
 [submodule "tools/splat"]
 	path = tools/splat
 	url = https://github.com/ethteck/splat.git
+[submodule "tools/mkpsxiso"]
+	path = tools/mkpsxiso
+	url = https://github.com/Lameguy64/mkpsxiso.git
