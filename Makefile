@@ -123,9 +123,11 @@ $(SLPM_861).elf: $(PM_O_FILES)
 
 SLPM_86183: $(BUILD_DIR)/$(SLPM_861).83
 $(BUILD_DIR)/$(SLPM_861).83: $(BUILD_DIR)/$(SLPM_861).elf
-		$(OBJCOPY) -O binary $(BUILD_DIR)/$(SLPM_861).elf $@
+		$(OBJCOPY) -O binary $< $@
+		@# Pad to 0x6F800 bytes (456704) to match original
+		@truncate -s 456704 $@
 $(BUILD_DIR)/$(SLPM_861).elf: $(call list_o_files)
-		$(call link,SLPM_86183,$@)
+		$(call link,SLPM_861.83,$@)
 
 dirs:
 	$(foreach dir,$(PM_ASM_DIRS) $(PM_SRC_DIRS),$(shell mkdir -p $(BUILD_DIR)/$(dir)))

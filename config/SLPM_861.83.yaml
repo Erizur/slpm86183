@@ -58,4 +58,4 @@ segments:
       - [0x5FA8, asm]
       - [0x64F64, data]
       - [0x6F1A4, data, sdata]
-  - [0x6F1A8]
+  - [0x6F800]
