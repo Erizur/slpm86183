@@ -40,6 +40,7 @@ BUILD_DIR       := build
 CONFIG_DIR      := config
 LINKER_DIR	:= linker
 TOOLS_DIR       := tools
+ROM_DIR		:= iso
 
 # files
 PM_ASM_DIRS   := $(ASM_DIR)/${GAME_ID} $(ASM_DIR)/${GAME_ID}/data
@@ -69,10 +70,14 @@ MASPSX_DIR      := $(TOOLS_DIR)/maspsx
 MASPSX_APP      := $(MASPSX_DIR)/maspsx.py
 MASPSX          := $(PYTHON) $(MASPSX_APP)
 MASPSX_ARGS     := --expand-div
+DUMPSXISO       := $(TOOLS_DIR)/mkpsxiso/build/dumpsxiso
+MKPSXISO        := $(TOOLS_DIR)/mkpsxiso/build/mkpsxiso
 
 # flags
 SDATA_LIMIT     := -G4
 OPT_FLAGS       := -O2
+DUMPSXISO_FLAGS := -x $(ROM_DIR) -s $(ROM_DIR)/layout.xml ./popn.bin
+MKPSXISO_FLAGS  := -y -q -o $(BUILD_DIR)/result.bin -c $(BUILD_DIR)/result.cue $(ROM_DIR)/layout.xml
 
 # macros
 define list_src_files
@@ -132,12 +137,28 @@ $(BUILD_DIR)/$(SLPM_861).elf: $(call list_o_files)
 dirs:
 	$(foreach dir,$(PM_ASM_DIRS) $(PM_SRC_DIRS),$(shell mkdir -p $(BUILD_DIR)/$(dir)))
 
+iso:
+	@cp -v $(BUILD_DIR)/$(SLPM_861).83 $(ROM_DIR)/$(SLPM_861).83
+	$(MKPSXISO) $(MKPSXISO_FLAGS)
+
+teariso:
+	$(DUMPSXISO) $(DUMPSXISO_FLAGS)
+	@if [ ! -f $(SLPM_861).83 ]; then \
+		echo "Copying popn binary to project root"; \
+		cp -v $(ROM_DIR)/$(SLPM_861).83 ./$(SLPM_861).83; \
+	else \
+		echo "$(SLPM_861).83 already exists in project root, skipped."; \
+	fi
+
 extract: require-tools dirs
-		$(SPLAT) $(CONFIG_DIR)/$(GAME_ID).yaml
+	$(SPLAT) $(CONFIG_DIR)/$(GAME_ID).yaml
+	@echo "Removing alignment directives from linker script..."
+	#@sed -i '/\. = ALIGN(\., 16);/d' linker/$(GAME_ID).ld
+	@echo "Alignment directives removed"
 
 decompile: $(M2C_APP)
-		$(M2CTX) src/game/$(FILE).c
-		$(M2C) $(M2C_ARGS) --target mipsel-gcc-c --context ctx.c asm/game/nonmatchings/$(FILE)/$(FUNC).s
+		$(M2CTX) src/$(GAME_ID)/$(FILE).c
+		$(M2C) $(M2C_ARGS) --target mipsel-gcc-c --context ctx.c asm/$(GAME_ID)/nonmatchings/$(FILE)/$(FUNC).s
 
 require-tools: $(SPLAT_APP) $(ASMDIFFER_APP)
 update-dependencies: require-tools $(M2CTX_APP) $(M2C_APP)
@@ -173,6 +194,7 @@ $(BUILD_DIR)/%.c.o: %.c $(MASPSX_APP)
 
 SHELL = /bin/sh -e -o pipefail
 
+.PHONY: iso teariso
 .PHONY: all, clean, format, check, expected
 .PHONY: SLPM_86183
 .PHONY: extract

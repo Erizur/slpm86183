@@ -78,6 +78,8 @@ expected/
 .venv/
 .cache/
 
+popn.bin
+
 objdiff.json
 null.d
 ctx.c

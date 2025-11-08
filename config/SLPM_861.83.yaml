@@ -2,7 +2,7 @@ name: pop'n music (JP)
 sha1: baf9842c90a56bed42071753c92025c74900ebd7
 options:
   basename: SLPM_861.83
-  target_path: iso/SLPM_861.83
+  target_path: SLPM_861.83
   elf_path: build/SLPM_861.83.elf
   base_path: ..
 
@@ -35,6 +35,7 @@ options:
 
   extensions_path: tools/splat_ext
 
+  ld_align_section_vram_end: false
   subalign: 2
 
   string_encoding: ASCII
@@ -51,11 +52,20 @@ segments:
     type: code
     start: 0x800
     vram: 0x80010000
-    bss_size: 0x56AF0
     subsegments:
       - [0x800, rodata]
-      - [0x5F54, c, main]
-      - [0x5FA8, asm]
+      - [0xB6C, rodata]      # ← Add these splits!
+      - [0xFC0, rodata]
+      - [0x191C, rodata]
+      - [0x2130, rodata]
+      - [0x23E4, rodata]
+      - [0x3248, rodata]
+      - [0x37AC, rodata]
+      - [0x3858, rodata]
+      - [0x39F4, rodata]
+      - [0x45F8, rodata]
+      - [0x479C, rodata]
+      - [0x5F54, asm]        # ← Code starts here
       - [0x64F64, data]
       - [0x6F1A4, data, sdata]
   - [0x6F800]
