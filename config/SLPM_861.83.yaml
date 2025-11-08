@@ -17,6 +17,9 @@ options:
   ld_script_path: linker/SLPM_861.83.ld
   ld_dependencies: True
 
+  create_undefined_funcs_auto: True
+  create_undefined_syms_auto: True
+
   find_file_boundaries: True
   gp_value: 0x8007E9A4
 
@@ -34,6 +37,10 @@ options:
   undefined_syms_auto_path: linker/undefined_syms_auto.SLPM_861.83.txt
 
   extensions_path: tools/splat_ext
+
+  asm_function_macro: glabel
+  asm_jtbl_label_macro: jlabel
+  asm_data_macro: dlabel
 
   ld_align_section_vram_end: false
   subalign: 2
@@ -65,7 +72,8 @@ segments:
       - [0x39F4, rodata]
       - [0x45F8, rodata]
       - [0x479C, rodata]
-      - [0x5F54, asm]        # ← Code starts here
+      - [0x5F54, c, main]
+      - [0x5FA8, asm]
       - [0x64F64, data]
       - [0x6F1A4, data, sdata]
   - [0x6F800]

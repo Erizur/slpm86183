@@ -152,9 +152,6 @@ teariso:
 
 extract: require-tools dirs
 	$(SPLAT) $(CONFIG_DIR)/$(GAME_ID).yaml
-	@echo "Removing alignment directives from linker script..."
-	#@sed -i '/\. = ALIGN(\., 16);/d' linker/$(GAME_ID).ld
-	@echo "Alignment directives removed"
 
 decompile: $(M2C_APP)
 		$(M2CTX) src/$(GAME_ID)/$(FILE).c
