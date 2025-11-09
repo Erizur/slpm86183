@@ -17,7 +17,7 @@ let
 in
 pkgs.mkShell {
     name = "popenv";
-    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake pcsx-redux endPkgs.binutilsNoLibc];
+    nativeBuildInputs = with pkgs; [ ghidra_pkg gnumake xxd pcsx-redux endPkgs.binutilsNoLibc];
     shellHook = ''
       mkdir -p .bin
       ln -sf $(which mips-linux-gnu-as) .bin/mipsel-linux-gnu-as

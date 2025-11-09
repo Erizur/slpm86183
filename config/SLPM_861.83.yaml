@@ -12,7 +12,6 @@ options:
   asm_path: asm/SLPM_861.83
   src_path: src/SLPM_861.83
   build_path: build
-  create_asm_dependencies: True
 
   ld_script_path: linker/SLPM_861.83.ld
   ld_dependencies: True
@@ -20,7 +19,7 @@ options:
   create_undefined_funcs_auto: True
   create_undefined_syms_auto: True
 
-  find_file_boundaries: True
+  find_file_boundaries: False
   gp_value: 0x8007E9A4
 
   o_as_suffix: False
@@ -59,21 +58,11 @@ segments:
     type: code
     start: 0x800
     vram: 0x80010000
+    bss_size: 0x56AF0
     subsegments:
-      - [0x800, rodata]
-      - [0xB6C, rodata]      # ← Add these splits!
-      - [0xFC0, rodata]
-      - [0x191C, rodata]
-      - [0x2130, rodata]
-      - [0x23E4, rodata]
-      - [0x3248, rodata]
-      - [0x37AC, rodata]
-      - [0x3858, rodata]
-      - [0x39F4, rodata]
-      - [0x45F8, rodata]
-      - [0x479C, rodata]
+      - [0x800, rodata]       
       - [0x5F54, c, main]
-      - [0x5FA8, asm]
+      - [0x5FA8, asm, 5FA8]
       - [0x64F64, data]
       - [0x6F1A4, data, sdata]
   - [0x6F800]
