@@ -17,7 +17,7 @@
     <tbody>
       <tr>
         <td><code>SLPM_861.83</code></td>
-        <td><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Erizur/slpm86183/gh-report/assets/progress-slpm861.json" alt="progress"></td>
+        <td><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Erizur/slpm86183/gh-report/results/progress-slpm861.json" alt="progress"></td>
         <td>Full game executable</td>
       </tr>
     </tbody>
@@ -58,15 +58,33 @@ cmake --build build
 You should now have a build folder with the `mkpsxiso` and `dumpsxiso` binaries. We will need them for the next step.
 
 ### ROM Extraction
-You will need to provide your own BIN dump of the retail game's ROM. (sha1: `891cfb144375d3f71b1067f74400ac07e1fa5355`)\
-After obtaining the .BIN, place it on the parent directory and rename it into `popn.bin`. Once that's done, open a terminal and run `make teariso`.\
-If you did everything correctly, there should now be an iso folder, and a binary called `SLPM_861.83` on the main directory. **DO NOT OVERWRITE/DELETE THIS FILE**, as it is the original binary to be used as reference for other programs.
+You will need to provide your own dump of the retail game's ROM. (sha1: `891cfb144375d3f71b1067f74400ac07e1fa5355`)\
+You should obtain a .BIN, place it on the parent directory and rename it into `popn.bin`. Once that's done, open a terminal and run `make teariso`.\
+If you did everything correctly, there should now be an iso folder, and a binary called `SLPM_861.83` on the main directory. **DO NOT OVERWRITE/DELETE THIS FILE**, as it is the original binary to be used as reference for other programs in the decompilation.
 
  ### Python environment setup
- To setup the Python shell with all the requirements for the project, you will need a virtual environment with pip.\
+ To setup the Python shell with all the requirements for the project, you will need a virtual environment (.venv) with pip.\
  You can set up a project by running the following commands on the main directory:
  ```bash
- python3 -m venv .venv                      # Creates `.venv` folder with environment.
+python3 -m venv .venv                      # Creates `.venv` folder with environment.
 source .venv/bin/activate                  # Activates environment (must be run in every new terminal session).
 python3 -m pip install -r requirements.txt # Installs project requirements from `requirements.txt`.
 ```
+### Code compilation
+On the parent directory in a terminal, run `make setup` to extract the needed code from the binary.
+If it finished successfully, run `make` to build.
+Once the build has finished, a folder named `build` will be produced. The output results and binaries will be inside.
+
+Additional `make` commands:
+* `build`: Builds the executable.
+* `check`: Builds the executable. After compilation, it compares its checksum with the original file.
+* `clean-build`: Regenerates the project configuration and builds the executable.
+* `clean-check`: Regenerates the project configuration and builds the executable. After compilation, it compares its checksum with the original file.
+* `objdiff-config`: Generates project configuration for [objdiff](https://github.com/encounter/objdiff).
+* `compilation-test`: Run progress and matching build processes for avoiding compilation errors.
+
+NOTE: `clean-build/clean-check/compilation-test` is obligatory if the decompilation configuration files inside the `config` folder or the `Makefile` have been modified.
+
+
+
+
