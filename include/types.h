@@ -2,40 +2,44 @@
 #define TYPES_H
 
 /*
- * The following code was taken from open-ribbon:
- * https://github.com/open-ribbon/open-ribbon/
+ * The following code was taken from silent-hill-decomp:
+ * https://github.com/Vatuu/silent-hill-decomp
  *
  * Check that decompilation out. It's awesome!
  */
 
-typedef char int8_t;
-typedef short int16_t;
-typedef int int32_t;
-typedef long long int64_t;
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long long uint64_t;
-typedef unsigned char u_char;
-typedef unsigned short u_short;
-typedef unsigned int u_long;
-
-typedef signed char s8;
-typedef signed short s16;
-typedef signed int s32;
-typedef signed long long s64;
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
-
-typedef int bool;
-enum { false, true };
+#include "psyq/sys/types.h"
 
 #ifndef NULL
-#define NULL (0)
+#define NULL 0
 #endif
+
+typedef signed char        byte;
+typedef signed char        s8;
+typedef signed short       s16;
+typedef signed int         s32;
+typedef signed long long   s64;
+typedef unsigned char      u8;
+typedef unsigned short     u16;
+typedef unsigned int       u32;
+typedef unsigned long long u64;
+
+typedef signed char        q0_8;   // Q0.8 fixed-point.
+typedef signed short       q11_4;  // Q11.4 fixed-point.
+typedef signed short       q7_8;   // Q7.8 fixed-point.
+typedef signed short       q3_12;  // Q3.12 fixed-point.
+typedef signed int         q27_4;  // Q27.4 fixed-point.
+typedef signed int         q25_6;  // Q25.6 fixed-point.
+typedef signed int         q23_8;  // Q23.8 fixed-point.
+typedef signed int         q19_12; // Q19.12 fixed-point.
+typedef unsigned short     q8_8;   // Q8.8 fixed-point.
+typedef unsigned int       q24_8;  // Q24.8 fixed-point.
+typedef unsigned int       q20_12; // Q20.12 fixed-point.
+
+#ifndef __cplusplus
+typedef enum { false, true } bool;
+#endif
+
+#define NO_VALUE -1
 
 #endif
