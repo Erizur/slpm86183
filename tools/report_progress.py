@@ -22,13 +22,13 @@ def getPercentage(totalFuncCount, remainingFuncCount):
 def getColor(totalFuncCount, remainingFuncCount):
     percentage = getPercentage(totalFuncCount, remainingFuncCount)
     if percentage >= 75:
-        return "brightgreen"
+        return "green"
     elif percentage >= 50:
-        return "brightyellow"
+        return "yellow"
     if percentage >= 25:
-        return "brightorange"
+        return "orange"
     else:
-        return "brightred"
+        return "red"
 
 def getRequiredAsm(fileName):
     with open(filePath, "rt") as f:
