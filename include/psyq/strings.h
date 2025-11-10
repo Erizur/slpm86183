@@ -3,7 +3,7 @@
  * string functions pseudo definition header 
  */
 /*
- * $PSLibId: Run-time Library Release 4.3$
+ * $PSLibId: Run-time Library Release 4.4$
  */
 
 #ifndef	_STRINGS_H

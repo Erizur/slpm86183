@@ -2,7 +2,7 @@
 #define _LIBGS_H_
 
 /*
- * $PSLibId: Run-time Library Release 4.3$
+ * $PSLibId: Run-time Library Release 4.4$
  */
 
 /*

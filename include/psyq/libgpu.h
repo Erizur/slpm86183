@@ -1,4 +1,4 @@
-/* $PSLibId: Run-time Library Release 4.3$ */
+/* $PSLibId: Run-time Library Release 4.4$ */
 #ifndef _LIBGPU_H_
 #define _LIBGPU_H_
 /*
@@ -108,10 +108,10 @@ extern	int (*GPU_printf)();	/* printf() object */
  *	Set Primitive Attributes
  */
 #define setTPage(p,tp,abr,x,y) \
-	((p)->tpage = GetTPage(tp,abr,x,y))
+	((p)->tpage = getTPage(tp,abr,x,y))
 
 #define setClut(p,x,y) \
-	((p)->clut = GetClut(x,y))
+	((p)->clut = getClut(x,y))
 					   
 /*
  * Set Primitive Colors
@@ -261,7 +261,7 @@ extern	int (*GPU_printf)();	/* printf() object */
 	 (((y)&0x200)<<2))
 
 #define getClut(x, y) \
-	((y<<6)|((x>>4)&0x3f))
+	(((y)<<6)|(((x)>>4)&0x3f))
 
 #define dumpTPage(tpage)						\
 	GPU_printf("tpage: (%d,%d,%d,%d)\n",				\
@@ -806,6 +806,7 @@ extern void GetDrawMode(DR_MODE *p);
 extern void GetTexWindow(DR_TWIN *p);
 extern void GetDrawArea(DR_AREA *p);
 extern void GetDrawOffset(DR_OFFSET *p);
+extern void GetDrawEnv2(DR_ENV *p);
 
 #if defined(_LANGUAGE_C_PLUS_PLUS)||defined(__cplusplus)||defined(c_plusplus)
 }

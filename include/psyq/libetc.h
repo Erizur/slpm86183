@@ -1,4 +1,4 @@
-/* $PSLibId: Run-time Library Release 4.3$ */
+/* $PSLibId: Run-time Library Release 4.4$ */
 #ifndef _LIBETC_H_
 #define _LIBETC_H_
 
@@ -48,7 +48,7 @@ extern int PadIdentifier;
 #define _PAD(x,y) ((y)<<((x)<<4))
 
 /* scratch pad address 0x1f800000 - 0x1f800400 */
-#define getScratchAddr(offset)  ((u_long *)(0x1f800000+offset*4))
+#define getScratchAddr(offset)  ((u_long *)(0x1f800000+(offset)*4))
 
 /*
  * Video Mode:	NTSC/PAL
