@@ -1,2 +1,0 @@
-[decompme.compilers]
-"./bin/gcc" = "gcc2.91.66-mipsel"
