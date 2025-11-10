@@ -26,8 +26,8 @@ jobs:
           python-version: '3.x'
       - name: Generate report
         run: |
-            mkdir -p gh-report/assets
-            python tools/report_progress.py /src/game SLPM_861.83 > gh-report/assets/progress-slpm861.json
+            mkdir -p gh-report/results
+            python tools/report_progress.py /src/SLPM_861.83 SLPM_861.83 > gh-report/results/progress-slpm861.json
       - name: Commit report
         run: |
             git config --global user.name 'Erizur'
