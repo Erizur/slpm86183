@@ -52,7 +52,7 @@ for filePath in getFiles(args.path):
     functionsFound += getFoundFunctions(filePath)
 
 # Currently hardcode for accuracy.
-functionsFound = 1650
+requireAsmFound = 1650
 
 report = {
     "schemaVersion": 1,
