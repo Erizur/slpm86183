@@ -59,6 +59,7 @@ report = {
     "label": args.label,
     "message": repr(getPercentage(functionsFound, requireAsmFound)) + "%",
     "color": getColor(functionsFound, requireAsmFound),
+    "namedLogo": "playstation",
 }
 
 print(json.dumps(report))
