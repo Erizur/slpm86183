@@ -9,6 +9,9 @@ on:
       - 'src/**/*.c'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update-progress:
     runs-on: ubuntu-latest
