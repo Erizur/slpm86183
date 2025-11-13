@@ -78,7 +78,7 @@ python3 -m pip install -r requirements.txt # Installs project requirements from 
 ```
 
 #### NixOS users
-Because NixOS can not run dynamically-linked executables, and the requirements' heavy reliance on external tools, you will have to use tools like [nix-ld](https://github.com/nix-community/nix-ld) as a workaround.
+Because NixOS can not run dynamically-linked executables, and the requirements' heavy reliance on external dependencies, you will have to use tools like [nix-ld](https://github.com/nix-community/nix-ld) as a workaround.
 As an alternative, if you are using flakes, you can create the virtual environment using tools like [fix-python](https://github.com/GuillaumeDesforges/fix-python/) instead, but you will need different arguments to set it up:
  ```bash
 # These commands assume you are on a development shell with Python3 included. The shell.nix from the repository does not include Python.
