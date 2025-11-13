@@ -1,11 +1,11 @@
 -r splat/requirements.txt
-pre-commit
-black
-pycparser
-watchdog
-tqdm
-intervaltree
-colorama
 python-Levenshtein
-cxxfilt
+python-ranges
 toml
+clang-format
+clang-tidy
+pycparser
+pyelftools
+construct
+ninja
+ninja_syntax

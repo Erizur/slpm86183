@@ -1,6 +1,6 @@
 # subsegments
 # format: [rom_offset, type, function_name]
-      - [0x848, asm, FUN_80010048]
+      - [0x848, asm, FUN_80010048] # THIS SEEMS TO BE A LABEL! (dlabel on splat). ignore.
       - [0x5F54, asm, main]
       - [0x609C, asm, FUN_8001589c]
       - [0x61BC, asm, FUN_800159bc]

@@ -1,13 +1,13 @@
 categories:
-  - id: slpm_861.83
+  - id: SLPM_861.83
     name: Main Executable
     paths:
-      - slpm_861.83
+      - SLPM_861.83
 
 expected_paths:
   asm: expected/asm
 
 ignored_files:
-  - slpm_861.83/header
+  - SLPM_861.83/header
 
 output: ./objdiff.json
