@@ -48,7 +48,7 @@ On a system with Nix installed, there is a development shell you can activate on
 ```
 nix-shell
 ```
-Note that due to nixpkgs' binary cache storage limit, cross-platform binaries are not cached, meaning you will have to build the MIPS GCC toolchain on your system. This task can usually around 30 minutes, depending on your system's specs.
+Note that due to nixpkgs' binary cache storage limit, cross-platform binaries are not cached, meaning you will have to build the MIPS GCC toolchain on your system. This task can usually take around 30 minutes, depending on your system's specs.
 ### Cloning
 Clone this repository to the directory of your choice. Make sure to clone it recursively!
 ```
