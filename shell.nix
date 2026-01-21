@@ -7,7 +7,6 @@ let
     exts:
     with pkgs.ghidra-extensions; [
       ret-sync
-      gnudisassembler
       findcrypt
       ghidra-delinker-extension
     ]
