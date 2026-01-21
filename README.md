@@ -48,7 +48,7 @@ On a system with Nix installed, there is a development shell you can activate on
 ```
 nix-shell
 ```
-Note that due to nixpkgs' binary cache storage limit, cross-platform binaries are not cached, meaning you will have to build the MIPS GCC toolchain on your system. This task can usually around 30 minutes, depending on your system's specs.
+Note that due to nixpkgs' binary cache storage limit, cross-platform binaries are not cached, meaning you will have to build the MIPS GCC toolchain on your system. This task can usually take around 30 minutes, depending on your system's specs.
 ### Cloning
 Clone this repository to the directory of your choice. Make sure to clone it recursively!
 ```
@@ -78,7 +78,7 @@ python3 -m pip install -r requirements.txt # Installs project requirements from 
 ```
 
 #### NixOS users
-Because NixOS can not run dynamically-linked executables, and the requirements' heavy reliance on external tools, you will have to use tools like [nix-ld](https://github.com/nix-community/nix-ld) as a workaround.
+Because NixOS can not run dynamically-linked executables, and the requirements' heavy reliance on external dependencies, you will have to use tools like [nix-ld](https://github.com/nix-community/nix-ld) as a workaround.
 As an alternative, if you are using flakes, you can create the virtual environment using tools like [fix-python](https://github.com/GuillaumeDesforges/fix-python/) instead, but you will need different arguments to set it up:
  ```bash
 # These commands assume you are on a development shell with Python3 included. The shell.nix from the repository does not include Python.
