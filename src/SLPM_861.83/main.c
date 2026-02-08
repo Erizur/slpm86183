@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern void PopnMain(void);
+extern void func_800157A8(void);
 extern void *D_8007F9B0;
 extern char LBL_POPNSTART[];
 
@@ -10,15 +10,13 @@ extern char LBL_POPNSTART[];
  */
 
 int main(void) {
-    init_sio(2);
+    FUN_80061fbc(2);
     fprintf(-1, LBL_POPNSTART);
-    mts_boot_task(
+    FUN_80060f00(
         3,
-        (void*)&PopnMain,
+        (void*)&func_800157A8,
         (void*)&D_8007F9B0,
         0x800
     );
     return 0;
 }
-
-INCLUDE_ASM("asm/SLPM_861.83/nonmatchings/main", PopnMain);
