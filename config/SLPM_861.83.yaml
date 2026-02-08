@@ -28,7 +28,8 @@ options:
   section_order: [".rodata", ".text", ".data", ".sdata", ".sbss", ".bss"]
 
   symbol_addrs_path:
-    - config/symbol_addrs.SLPM_861.83.txt
+    - config/sym_data.txt
+    - config/sym_functions.txt
   reloc_addrs_path:
     - config/reloc_addrs.txt
 
@@ -76,7 +77,8 @@ segments:
       - [0x45F8, rodata]
       - [0x479C, rodata]
       - [0x5F54, c, main]
-      - [0x5FA8, asm]
+      - [0x609C, c, fs]
+      - [0x9328, asm]
       - [0x64F64, data]
       - [0x6F1A4, data, sdata]
   - [0x6F800]

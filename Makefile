@@ -156,18 +156,21 @@ all: build
 build: $(TARGET_OUT)
 
 objdiff-config: regenerate
-	@$(MAKE) NON_MATCHING=1 SKIP_ASM=1 expected
+	@$(MAKE) NON_MATCHING=1 expected
 	@$(PYTHON) $(OBJDIFF_DIR)/objdiff_generate.py $(OBJDIFF_DIR)/config.yaml
 
 report:
-	@$(MAKE) BUILD_ENGINE=1 BUILD_SCREENS=1 BUILD_MAPS=1 objdiff-config
+	@$(MAKE) objdiff-config
 	@$(OBJDIFF) report generate > $(BUILD_DIR)/progress.json
 
 check: build
 	@sha256sum --ignore-missing --check config/slpm861.sha
 
-progress:
-	$(MAKE) build NON_MATCHING=1 SKIP_ASM=1
+progress: build
+	@$(PYTHON) tools/report_progress.py
+
+progress-shield: build
+	@$(PYTHON) tools/report_progress.py --shield
 
 expected: build
 	mkdir -p $(EXPECTED_DIR)

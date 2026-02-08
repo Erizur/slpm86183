@@ -6,6 +6,14 @@ categories:
 
 expected_paths:
   asm: expected/asm
+  build: expected
+
+base_path: build/out
+
+units:
+  - SLPM_861.83/main
+  - SLPM_861.83/fs
+  - SLPM_861.83/9328
 
 ignored_files:
   - SLPM_861.83/header
