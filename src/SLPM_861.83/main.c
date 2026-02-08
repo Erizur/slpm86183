@@ -1,7 +1,7 @@
 #include "common.h"
 
-extern void func_800157A8(void);
-extern void *D_8007F9B0;
+extern void PopnMain(void);
+extern void *DAT_8007f9b0;
 extern char LBL_POPNSTART[];
 
 /* Note for future development:
@@ -10,13 +10,14 @@ extern char LBL_POPNSTART[];
  */
 
 int main(void) {
-    FUN_80061fbc(2);
+    init_sio(2);
     fprintf(-1, LBL_POPNSTART);
-    FUN_80060f00(
+    mts_boot_task(
         3,
-        (void*)&func_800157A8,
-        (void*)&D_8007F9B0,
+        (void*)&PopnMain,
+        (void*)&DAT_8007f9b0,
         0x800
     );
     return 0;
 }
+
